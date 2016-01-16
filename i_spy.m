@@ -1,25 +1,32 @@
-function [r,c] = i_spy ( object_im, big_im, x )
+function [r,c] = i_spy ( small_image, big_image, x )
+% small_image = imresize(small_image, 0.5, 'nearest');
+% big_image = x;
 
-Ro = size(object_im, 1); % height or y resolution of small image
-Co = size(object_im, 2); % width or x resolution of small image 
+Ro = size(small_image, 1); % height or y resolution of small image
+Co = size(small_image, 2); % width or x resolution of small image 
 
-Rb = size(big_im, 1); % height or y resolution of big image
-Cb = size(big_im, 2); % width or x resolution of big image
+Rb = size(big_image, 1); % height or y resolution of big image
+Cb = size(big_image, 2); % width or x resolution of big imagex
 
-o_im = int16(object_im); % convert the small image to an integer matrix
-b_im = int16(big_im);    % convert the big image to an integer matrix
+s_im = int16(small_image); % convert the small image to an integer matrix
+b_im = int16(big_image);    % convert the big image to an integer matrix
 
 %Loop through big image
-for r = 1 : Rb - (Ro-1)
-    for c = 1 : Cb - (Co-1)
-        row = r:r+(Ro-1);
-        col = c:c+(Co-1);
-        
-        cropped_big_image = b_im(row, col, : );
-        
-        result = isequal(o_im, cropped_big_image);
-        if (result)
-            return;
+r = 1;
+while r <= Rb - (Ro-1)
+    c = 1;
+   while c <= Cb - (Co-1)
+       % isequal is more efficient than subtracting the cropped image with
+      % the small image since it stops as soon as a value isn't equal
+        if isequal(s_im(1,1), b_im(r, c))
+%             if isequal(s_im(1,1:5), b_im(r,c:c+4))
+                if isequal(s_im, b_im(r:r+(Ro-1), c:c+(Co-1), :))
+                    return;
+                end
+%             end
         end
-    end
+       c = c+1;
+   end
+   r = r+1;
 end
+

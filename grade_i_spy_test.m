@@ -43,18 +43,17 @@ pt = 0;
 for i = 1:setN
     
     % load big image
-    fn = sprintf ( '%sset%d_big_im.png', ...
-        folder_name, i );
+    fn = sprintf ( '%sset%d_big_im.png', folder_name, i );
     b_im = imread ( fn );
     
-    % load gt
+    % load gt (the answers)
     fn = sprintf ( '%sset%d_gt.csv', folder_name, i );
     gt = csvread ( fn );
     
     % load "x"
     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-    if ( exist ( fn ) == true )
-        load fn;
+    if ( exist ( fn, 'file' ))
+        load(fn);
     else
         x = '';
     end

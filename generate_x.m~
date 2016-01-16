@@ -1,0 +1,5 @@
+function [x] = generate_x ( b_im )
+% x = imresize(b_im, 0.5, 'nearest');
+% [X, map] = imread(b_im);
+
+    function[y] = cal

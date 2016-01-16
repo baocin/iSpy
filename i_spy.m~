@@ -17,9 +17,28 @@ for r = 1 : Rb - (Ro-1)
         
         cropped_big_image = b_im(row, col, : );
         
-        result = isequal(o_im, cropped_big_image);
-        if (result)
-            return;
+        % Loop through the cropped image, stop upon first wrong pixel
+        isMatch = true;
+        for cr = 1 : size(row)
+           for cc = 1 : size(col)
+               if b_im(r,c) == b_im(cr,cc)
+                  disp('Same Pixel')
+%                   return;
+               else
+                   disp('Different Pixel')
+                   isMatch = false;
+                   break
+                   
+               end
+           end
+           if ~isMatch
+               break
+           end
         end
+%         diff_val = cropped_big_image - o_im;
+%         
+%         if ( sum ( abs ( diff_val(:)) ) == 0 )
+%             return;
+%         end
     end
 end

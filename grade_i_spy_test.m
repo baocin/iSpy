@@ -13,7 +13,7 @@
 %     
 %     % generate "x" for the big image
 %     x = generate_x ( b_im );
-%     
+%     x
 %     % save "x"
 %     fn = sprintf ( '%sset%d_x.mat', folder_name, i )
 %     save ( fn, 'x' );

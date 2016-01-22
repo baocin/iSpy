@@ -16,14 +16,12 @@ for i = 1:setN
     % generate "x" for the big image
     x = generate_x ( b_im );
     
-    
     % save "x"
-    fn = sprintf ( '%sset%d_x.mat', folder_name, i )
-    save ( fn, 'x' );
+    fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+    save ( fn, 'x');
+    disp(fn)        %Loading progress indicator
 
 end
-
-
 
 
 

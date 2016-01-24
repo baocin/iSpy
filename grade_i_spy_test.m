@@ -1,5 +1,5 @@
 % % 0.  generate "x"
-% this section will be commented out during testing
+% % this section will be commented out during testing
 % folder_name = 'data/'; 
 % setN = 3;
 % objectI0 = 1; 
@@ -8,17 +8,24 @@
 % for i = 1:setN
 %     
 %     % load big image
-%     fn = sprintf ( '%sset%d_big_im.png', folder_name, i );
+%     fn = sprintf ( '%sset%d_big_im.png', ...
+%         folder_name, i );
 %     b_im = imread ( fn );
+%     
 %     
 %     % generate "x" for the big image
 %     x = generate_x ( b_im );
-%     x
+%     
+%     
 %     % save "x"
 %     fn = sprintf ( '%sset%d_x.mat', folder_name, i )
 %     save ( fn, 'x' );
 % 
 % end
+
+
+
+
 
 % 1.  setup
 
@@ -30,6 +37,8 @@ objectI0 = 1;
 objectI1 = 10;
 distantT = 5;
 
+
+
 % 2.  test each image
 timeLimitSec = 60;
 
@@ -37,26 +46,36 @@ timeLimitSec = 60;
 % start the timer
 t = cputime;
 
-% points
+
 pt = 0;
 
 for i = 1:setN
     
     % load big image
-    fn = sprintf ( '%sset%d_big_im.png', folder_name, i );
+    fn = sprintf ( '%sset%d_big_im.png', ...
+        folder_name, i );
     b_im = imread ( fn );
     
-    % load gt (the answers)
+    % load gt
     fn = sprintf ( '%sset%d_gt.csv', folder_name, i );
     gt = csvread ( fn );
     
     % load "x"
-    fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-    if ( exist ( fn, 'file' ))
-        load(fn);
-    else
-        x = '';
-    end
+     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+     if ( exist ( fn ) == true )
+         load fn;
+     else
+         x = '';
+     end
+    
+    % load "x"
+%     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+%     disp(fn)
+%     if ( exist ( fn, 'file' ))
+%         load(fn);
+%     else
+%         x = '';
+%     end
     
     for j = objectI0:objectI1
         

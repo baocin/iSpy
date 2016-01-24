@@ -16,13 +16,12 @@ for i = 1:setN
     % generate "x" for the big image
     x = generate_x ( b_im );
     
+    
     % save "x"
-    fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+    fn = sprintf ( '%sset%d_x.mat', folder_name, i )
     save ( fn, 'x');
-    disp(fn)        %Loading progress indicator
 
 end
-
 
 
 % 1.  setup
@@ -59,20 +58,20 @@ for i = 1:setN
     gt = csvread ( fn );
     
     % load "x"
-     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-
-     if ( exist ( fn ) == true )
-         load fn;
-     else
-         x = '';
-     end
-   
 %      fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-%      if ( exist ( fn, 'file' ))
-%          load(fn);
+%      if ( exist ( fn ) == true )
+%          load fn;
 %      else
 %          x = '';
 %      end
+    
+    % load "x"
+     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+     if ( exist ( fn, 'file' ))
+         load(fn);
+     else
+         x = '';
+     end
     
     for j = objectI0:objectI1
         

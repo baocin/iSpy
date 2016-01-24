@@ -59,19 +59,20 @@ for i = 1:setN
     gt = csvread ( fn );
     
     % load "x"
-%     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-%     if ( exist ( fn ) == true )
-%         load fn;
-%     else
-%         x = '';
-%     end
-    
-    fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-    if ( exist ( fn, 'file' ))
-        load(fn);
-    else
-        x = '';
-    end
+     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+
+     if ( exist ( fn ) == true )
+         load fn;
+     else
+         x = '';
+     end
+   
+%      fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+%      if ( exist ( fn, 'file' ))
+%          load(fn);
+%      else
+%          x = '';
+%      end
     
     for j = objectI0:objectI1
         

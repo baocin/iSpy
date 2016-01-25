@@ -1,55 +1,86 @@
 function [r,c] = i_spy ( smallImage, bigImage, x )
-    %Convert x back from a table into a the original cell array
-    x = table2cell(x);
-    
+
+    %Calculate the heights of the small and big images
     sHeight = size(smallImage, 1); % height or y resolution of small image
     sWidth = size(smallImage, 2);  % width or x resolution of small image 
 
     bHeight = size(bigImage, 1);  % height or y resolution of big image
     bWidth = size(bigImage, 2);   % width or x resolution of big imagex
 
-    sMatrix = int16(smallImage);  % convert the small image to an integer matrix
-    bMatrix = int16(bigImage);    % convert the big image to an integer matrix
-    
-    smallRed = smallImage(1,1,1) + 1;
-    smallGreen = smallImage(1,1,3) + 1; 
+    sMatrix = uint16(smallImage);  % convert the small image to an integer matrix
+    bMatrix = uint16(bigImage);    % convert the big image to an integer matrix
     
     %Default (invalid) r and c values
     r = 0;
     c = 0;
     
+    % get the color of the top left pixel in the small image
+    topLeftColor = struct('red', smallImage(1,1,1)+1, 'blue', smallImage(1,1,2)+1);
+    center = struct('row', int16(sHeight/2), 'col', int16(sWidth/2));
+    bottomLeft = struct('row', sHeight, 'col', sWidth);
+        
     % Decide what approach to use depending on if x was loaded in correctly
-    if (size(x) ~= 0)
-        disp('Using pre-generated data')
-        for index=1:size(x{smallRed, smallGreen}, 2)
-             r = x{smallRed, smallGreen}{index}(1);
-             c = x{smallRed, smallGreen}{index}(2);
-%             
-%             r = x{smallRed, smallGreen}(index).x;
-%             c = x{smallRed, smallGreen}(index).y;
+    if (~ischar(x))  %x isn't '' so the pregenerated data is loaded
+        %Use pregenerated data
+        
+        %Convert x back from a table into a the original cell array
+        x = table2cell(x);
+        
+        % x{smallRed, smallGreen} is the array of all pixels in the big image 
+        % that match the color of first pixel of the small image
+        for index=1:size(x{topLeftColor.red, topLeftColor.blue}, 1)
+%             disp(x{topLeftColor.red, topLeftColor.blue}(index,:))
+%             r = x{topLeftColor.red, topLeftColor.blue}{index,1}(1);
+            r = x{topLeftColor.red, topLeftColor.blue}(index,1);
+%             c = x{topLeftColor.red, topLeftColor.blue}{index,1}(2);
+            c = x{topLeftColor.red, topLeftColor.blue}(index,2);
             
-            %fprintf('%d %d\n', r, c)
-            if isequal(sMatrix(1, 1:6), bMatrix(r, c:c+5))
-                if isequal(sMatrix, bMatrix(r:r+(sHeight-1), c:c+(sWidth-1), :))
-                  return;
+            %we know the topleft pixels match
+            
+            % Check if small image would extend over big image if placed at
+            % this pixel
+            if (r+sHeight-1) < bHeight && (c+sWidth-1) < bWidth
+                
+                %Check bottom right pixel for match
+                if isequal(sMatrix(bottomLeft.row, bottomLeft.col), bMatrix(r+bottomLeft.row-1, c+bottomLeft.col-1))
+                    
+                    %Check center pixel for match
+                    if isequal(sMatrix(center.row, center.col), bMatrix(r+center.row-1, c+center.col-1))
+                        
+                        %Check entire small image
+                        if isequal(sMatrix, bMatrix(r:r+(sHeight-1), c:c+(sWidth-1), :))
+                          return;
+                        end
+                    
+                    end
                 end
             end
         end
+        
     else
-        disp('Using naive approach')
         % Naive Approach as Backup
-        smallImageFirstPixel = sMatrix(1,1);
+        
         %Loop through big image
         r = 1;
         while r <= bHeight - (sHeight-1)
             c = 1;
             while c <= bWidth - (sWidth-1)
-                 if isequal(smallImageFirstPixel, bMatrix(r, c))
-                     if isequal(sMatrix(1, 1:6), bMatrix(r, c:c+5))
-                         if isequal(sMatrix, bMatrix(r:r+(sHeight-1), c:c+(sWidth-1), :)) 
-                             return;
-                         end
-                     end
+                %Does this pixel match the the first pixel in the small image
+                 if isequal(sMatrix(1,1), bMatrix(r, c))
+
+                     %Check bottom right pixel for match
+                    if isequal(sMatrix(bottomLeft.row, bottomLeft.col), bMatrix(r+bottomLeft.row-1, c+bottomLeft.col-1))
+                        
+                        %Check center pixels for match
+                        if isequal(sMatrix(center.row, center.col+2), bMatrix(r+center.row-1, c+center.col-1+2))
+
+                            %Check entire small image
+                            if isequal(sMatrix, bMatrix(r:r+(sHeight-1), c:c+(sWidth-1), :))
+                              return;
+                            end
+                        end
+                    end
+                
                  end
                 c = c+1;
             end

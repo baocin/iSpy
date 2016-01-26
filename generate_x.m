@@ -7,11 +7,8 @@ function [x] = generate_x ( bigImage )
     %the image
     x = cell(matrixSize);
     
-    for col=1:matrixSize
-        for row=1:matrixSize
-           x{row,col} = []; 
-        end
-    end
+    % assign arrays to every cell of cell array x
+    x(:) = {[]};
     
     % Using while because I might want to modify the incrementing variables
 	c = 1;
@@ -20,11 +17,18 @@ function [x] = generate_x ( bigImage )
 		while (r < height)
             
             red = bigImage(r,c,1) + 1;
-            blue = bigImage(r,c,2) + 1;
+            blue = bigImage(r,c,3) + 1;
 
             %Add the point to the cell matrix
-%             x{red, blue}{end + 1} = [r c];
-            x{red, blue} = [x{red, blue}; [r c]];
+            %x{red, blue}{end + 1} = [r c];    %Slow
+            
+            %Using this saves ~8 MB from big image 2
+             x{red, blue} = [x{red, blue}; [r c]];
+            
+%               x{red, blue} = [x{red, blue} (r + (c-1)*size(bigImage))];
+            
+%             [a, b, c] = size(bigImage);
+%             x{red, blue} = [x{red, blue} sub2ind([a b], [r, c])];
             
 			%incrment row variable
 			r = r+1;

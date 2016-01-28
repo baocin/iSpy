@@ -1,5 +1,4 @@
 % 0.  generate "x"
-% this section will be commented out during testing
 folder_name = 'data/'; 
 setN = 3;
 objectI0 = 1; 
@@ -18,10 +17,13 @@ for i = 1:setN
     
     
     % save "x"
-    fn = sprintf ( '%sset%d_x.mat', folder_name, i )
-    save ( fn, 'x');
+    fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+    save ( fn, 'x' );
 
 end
+
+
+
 
 
 % 1.  setup
@@ -58,20 +60,12 @@ for i = 1:setN
     gt = csvread ( fn );
     
     % load "x"
-%      fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-%      if ( exist ( fn ) == true )
-%          load fn;
-%      else
-%          x = '';
-%      end
-    
-    % load "x"
-     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-     if ( exist ( fn, 'file' ))
-         load(fn);
-     else
-         x = '';
-     end
+    fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+    if ( exist ( fn, 'file' ) == true )
+        load fn;
+    else
+        x = '';
+    end
     
     for j = objectI0:objectI1
         

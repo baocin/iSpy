@@ -61,8 +61,8 @@ for i = 1:setN
     
     % load "x"
     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-    if ( exist ( fn, 'file' ) == true )
-        load fn;
+    if ( exist ( fn ) ~= 0 )
+        load (fn);
     else
         x = '';
     end

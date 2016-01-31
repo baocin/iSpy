@@ -18,13 +18,10 @@ for i = 1:setN
     
     % save "x"
     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
+    disp(fn)
     save ( fn, 'x' );
 
 end
-
-
-
-
 
 % 1.  setup
 
@@ -35,8 +32,6 @@ setN = 3;
 objectI0 = 1; 
 objectI1 = 10;
 distantT = 5;
-
-
 
 % 2.  test each image
 timeLimitSec = 60;

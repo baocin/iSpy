@@ -12,24 +12,22 @@ function [x] = generate_x ( bigImage )
     x.b(:) = {[]};
     
     %Skip every other row and column
-    aSlice = bigImage(1:2:end, 1:2:end, :);
-    bSlice = bigImage(2:2:end, 2:2:end, :);
+    x.a = bigImage(2:2:end, 2:2:end, :);
+    x.b = bigImage(1:2:end, 1:2:end, :);
     height = size(bigImage, 1);
     width = size(bigImage, 2);
     
     for c=1:width
        for r=1:height
+           if mod(c,2) == 0
+               
+           end
            %Add the point to the cell matrix
             red = bigImage(r,c,1) + 1;
             blue = bigImage(r,c,3) + 1;
-            
-           if mod(c,2) == 0
-              %Add the point to the cell matrix
-                x.b{red, blue} = [x{red, blue}; [r c]];
-           else
-               %Add the point to the cell matrix
-                x.a{red, blue} = [x{red, blue}; [r c]];
-           end
+
+            %Add the point to the cell matrix
+            x{red, blue} = [x{red, blue}; [r+2 c+2]];
        end
     end
     

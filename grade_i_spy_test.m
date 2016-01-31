@@ -23,10 +23,6 @@
 % 
 % end
 
-
-
-
-
 % 1.  setup
 
 % set info for the data to test

@@ -10,30 +10,21 @@ function [x] = generate_x ( bigImage )
     % assign arrays to every cell of cell array x
     x.map(:) = {[]};
     
+    %1 for red, 2 for green, 3 for blue
+    % used in i_spy too so changes are easier
     x.colorChannel = 1;
     
     % Using while because I might want to modify the incrementing variables
-	c = 1;
-	while (c < width)
-		r = 1;
-		while (r < height)
+	for c=1:width
+		for r=1:height
+            %get color of current pixel
             color = bigImage(r,c,x.colorChannel) + 1;
-%             blue = bigImage(r,c,3) + 1;
 
             %Add the point to the cell matrix
-            %x{red, blue}{end + 1} = [r c];    %Slow
+            x.map{color} = [x.map{color}; [r c]];
+%             x.map{color} = [x.map{color}; sub2ind(size(bigImage), r, c, x.colorChannel)];
             
-            %Using this saves ~8 MB from big image 2
-             x.map{color} = [x.map{color}; [r c]];
-%              x.map{red} = [x.map{red}; sub2ind(size(bigImage), r, c, x.colorChannel)];
-            
-%               x{red, blue} = [x{red, blue} (r + (c-1)*size(bigImage))];
-            
-			%incrment row variable
-			r = r+1;
-		end
-		%increment column variable
-		c = c+1;
+        end
     end
     
     %Convert x from a cell array into a table

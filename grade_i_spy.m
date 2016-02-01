@@ -1,6 +1,6 @@
 % 0.  generate "x"
 folder_name = 'data/'; 
-setN = 1;
+setN = 3;
 objectI0 = 1; 
 objectI1 = 10;
 
@@ -18,9 +18,8 @@ for i = 1:setN
     
     % save "x"
     fn = sprintf ( '%sset%d_x.mat', folder_name, i );
-    disp(fn)
     save ( fn, 'x' );
- 
+
 end
 
 
@@ -32,9 +31,9 @@ end
 % set info for the data to test
 folder_name = 'data/'; 
 
-setN = 1;
+setN = 3;
 objectI0 = 1; 
-objectI1 = 1;
+objectI1 = 10;
 distantT = 5;
 
 
